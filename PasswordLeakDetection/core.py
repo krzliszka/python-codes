@@ -13,6 +13,7 @@ import time
 import zipfile
 import zlib
 
+import passwordmeter
 import yaml
 from termcolor import colored
 
@@ -59,18 +60,17 @@ def analyze_file(_file, result, settings):
         bad_expressions = settings.bad_expressions if settings.bad_expressions else BAD_EXPRESSIONS
         if bad_expressions:
             if bad_expression_verifier(_file, bad_expressions):
-                logger.info("Bad expression has been found in a " + _file
-                            + " file. Skipping further analysis.")
+                logger.info("Bad expression has been found in a " + _file + " file. Skipping further analysis.")
                 return
 
         entropy_found = False
-        rule_triggerred = False
+        rule_triggered = False
         min_key = settings.min_key if settings.min_key else MIN_KEY_LENGTH
         max_key = settings.max_key if settings.max_key else MAX_KEY_LENGTH
         entropy = settings.entropy if settings.entropy else HIGH_ENTROPY_EDGE
 
         if settings.advance:
-            additional_checks = advancedSearch.AdvancedSearch()
+            additional_checks = advanced_search.AdvancedSearch()
             additional_checks.filetype_check(_file)
 
             for word in get_all_strings_from_file(_file):
@@ -80,12 +80,15 @@ def analyze_file(_file, result, settings):
                         entropy_found = True
 
             if additional_checks.final(_file):
-                data = {"Finding": "Advanced rule triggerred", "File": _file,
-                        "Details": {"filetype": additional_checks._FILETYPE,
-                                    "filetype_weight": additional_checks._FILETYPE_WEIGHT,
-                                    "grep_words": additional_checks._GREP_WORDS,
-                                    "grep_word_occurrence": additional_checks._GREP_WORD_OCCURRENCE,
-                                    "grep_words_weight": additional_checks._GREP_WORDS_WEIGHT}}
+                data = {"Finding": "Advanced rule triggered", "File": _file,
+                        "Details": {
+                            "filetype": additional_checks._filetype,
+                            "filetype_weight": additional_checks._filetype_weight,
+                            "grep_words": additional_checks._grep_words,
+                            "grep_word_occurrence": additional_checks._grep_word_occurrence,
+                            "grep_words_weight": additional_checks._grep_words_weight
+                            }
+                        }
                 result.put(data)
 
         for word in get_base64_strings_from_file(_file, min_key, max_key):
@@ -99,20 +102,22 @@ def analyze_file(_file, result, settings):
                 with open(_file) as f:
                     for line in f:
                         for password in password_search(line, settings):
-                            print(colored("FOUND POTENTIAL PASSWORD!!!", 'yellow'))
-                            print(colored("Potential password ", 'yellow') + colored(password[0], 'magenta')
-                                  + colored(" has been found in file " + _file, 'yellow'))
+                            print(colored("!!! FOUND POTENTIAL PASSWORD !!!", 'yellow'))
+                            print(colored("Potential password ", 'yellow') + colored(password[0], 'magenta') + colored(" has been found in file " + _file, 'yellow'))
                             data = {"Finding": "Password",
                                     "File": _file,
-                                    "Details": {"Password complexity": password[1],
-                                                "String": password[0]}}
+                                    "Details": {
+                                        "Password complexity": password[1],
+                                        "String": password[0]
+                                        }
+                                    }
                             result.put(data)
                             logger.info("potential password has been found in a file " + _file)
 
             except Exception as e:
                 logger.error("while trying to open " + str(_file) + ". Details:\n" + str(e))
 
-        if settings.remove and not (entropy_found or rule_triggerred):
+        if settings.remove and not (entropy_found or rule_triggered):
             remove_file(_file)
 
     except Exception as e:
@@ -120,18 +125,19 @@ def analyze_file(_file, result, settings):
 
 
 def found_high_entropy(_file, word, result, entropy):
-    b64Entropy = shannon_entropy(word)
+    b64_entropy = shannon_entropy(word)
 
-    if (b64Entropy > entropy) and false_positive_filter(word):
-        print(colored("FOUND HIGH ENTROPY!!!", 'green'))
-        print(colored("The following string: ", 'green')
-              + colored(word, 'magenta')
-              + colored(" has been found in " + _file, 'green'))
+    if (b64_entropy > entropy) and false_positive_filter(word):
+        print(colored("!!!FOUND HIGH ENTROPY!!!", 'green'))
+        print(colored("The following string: ", 'green') + colored(word, 'magenta') + colored(" has been found in " + _file, 'green'))
         print()
         logger.info("high entropy has been found in a file " + _file)
         data = {"Finding": "High entropy", "File": _file,
-                "Details": {"Entropy": b64Entropy,
-                            "String": word}}
+                "Details": {
+                    "Entropy": b64_entropy,
+                    "String": word
+                    }
+                }
         result.put(data)
         return True
     return False
@@ -141,14 +147,13 @@ def get_base64_strings_from_file(_file, min_length, max_length):
     with open(_file, 'r') as open_file:
         word = ""
         while True:
-
-            buf = open_file.read(1024)
-            if not buf:
+            buffer = open_file.read(1024)
+            if not buffer:
                 if max_length >= len(word) >= min_length:
                     yield word
                 break
 
-            for ch in buf:
+            for ch in buffer:
                 if ch in BASE64_CHARS:
                     word += ch
                 elif max_length >= len(word) >= min_length:
@@ -275,10 +280,6 @@ def start_the_hunt(settings):
 
 
 def shannon_entropy(data):
-    '''
-    Borrowed from
-    http://blog.dkbza.org/2007/05/scanning-data-for-entropy-anomalies.html
-    '''
     try:
         if not data:
             return 0
