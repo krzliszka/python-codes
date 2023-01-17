@@ -35,4 +35,4 @@ if __name__ == '__main__':
 
     opening()
     parser = argparse.ArgumentParser(formatter_class=SmartFormatter)
-    pas
+    pass
