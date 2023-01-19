@@ -35,4 +35,12 @@ if __name__ == '__main__':
 
     opening()
     parser = argparse.ArgumentParser(formatter_class=SmartFormatter)
-    pass
+    basic = parser.add_argument_group('BASIC USAGE')
+    configuration = parser.add_argument_group('CONFIGURATION')
+    basic.add_argument('-p', dest='local_path', required=True, help="Path to the folder containing files to be analyzed")
+    basic.add_argument('-r', '--remove', action='store_true', help="Files which don't contain any secret will be removed when this flag is set")
+    basic.add_argument('-a', '--advance', action='store_true', help="All files will be additionally analyzed using rules specified in 'rules.yaml' file when this flag is set")
+    basic.add_argument('-s', '--secret', action='store_true', help="All files will be additionally analyzed in search of hardcoded passwords when this flag is set")
+    basic.add_argument('-o', dest='outfile', default='results.json', help="Output file in JSON format")
+
+    configuration.add_argument('--min_key')
