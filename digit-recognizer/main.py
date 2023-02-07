@@ -32,6 +32,10 @@ class Application(tk.Tk):
         self.clear_button = tk.Button(self, text='Clear', command=self.clear_all)
 
         # creating grid structure
+        self.canvas.grid(row=0, column=0, pady=2, sticky=W, )
+        self.label.grid(row=0, column=1, pady=2, padx=2)
+        self.classify_button.grid(row=1, column=1, pady=2, padx=2)
+        self.clear_button.grid(row=1, column=0, pady=2)
 
         self.canvas.bind("<B1-Motion>", self.draw_lines)
 
