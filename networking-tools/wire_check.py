@@ -126,16 +126,20 @@ class NetworkCheck:
         self.target_ip = target_ip
 
     # sniffer detection
-    def bad_nose(self):
+    def bad_nose(self, subunet):
         """
-
+        Method for detecting network sniffers remotely on network
+        Example usage: nttl.bad_nose(subnet='192.168.1.0/24')
         """
-        pass
+        self.subnet = subnet
+        
+        promiscping(self.subnet)
 
     # IP spoofing
     def ip_spoof(self, fake_ip, target_ip):
         """
-
+        Method for simulating IP spoofing attacks
+        Example usage: nttl.ip_spoof(fake_ip='192.168.1.x', target_ip='192.168.1.154')
         """
         self.fake_ip = fake_ip
         self.target_ip = target_ip
