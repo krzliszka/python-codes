@@ -120,7 +120,7 @@ class NetworkCheck:
     # simulating MAC flood attacks
     def MAC_flood(self, interface, target_ip):
         """
-        # Method for MAC flooding
+        Method for MAC flooding
         Example usage: nttl.mac_flood(interface='wlan0', target_ip='192.168.1.154')
         """
         self.interface = interface
