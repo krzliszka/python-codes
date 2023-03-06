@@ -115,7 +115,7 @@ class NetworkCheck:
         """
 
         """
-        pass
+        
 
     # simulating MAC flood attacks
     def MAC_flood(self, interface, target_ip):
