@@ -32,7 +32,7 @@ class NetworkCheck:
     # creating fake access points
     def create_beacons(self, target_ESSID, interface, target_MAC):
         """
-        This method is creating fake access points
+        Method for creating fake access points
         """
         self.interface = interface
         self.target_ESSID = target_ESSID
@@ -47,7 +47,7 @@ class NetworkCheck:
     # ARP spoofing for MITM attacks
     def arp_spoof(self, router_ip, target_ip, interface):
         """
-        This metod is for ARP spoofing.
+        Method for ARP spoofing.
         Example usage: nttl.arpSpoof(router_ip='192.168.1.1', target_ip='192.168.1.154', interface='wlan0')
         """
         self.router_ip = router_ip
@@ -73,7 +73,7 @@ class NetworkCheck:
     # alive host scanning
     def host_prober(self, interface, subnet):
         """
-        This method is for probing alive hosts on desired network.
+        Method for probing alive hosts on desired network.
         Example usage: nttl.host_prober(interface='wlan0', subnet='192.168.1.0/24')
         """
         self.interface = interface
@@ -84,8 +84,9 @@ class NetworkCheck:
 
     # TCP stealth port scanning
     def tcp_port_scanner(self):
-        """
-
+        """ Method for scanning range of TCP ports
+            Example usage: nttl.tcpPortScanner(target_ip='192.168.1.1', start_point=1, end_point=100)
+            This code should scan 1-100 range of ports
         """
         pass
 
