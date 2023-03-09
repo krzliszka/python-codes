@@ -88,7 +88,9 @@ class NetworkCheck:
             Example usage: nttl.tcpPortScanner(target_ip='192.168.1.1', start_point=1, end_point=100)
             This code should scan 1-100 range of ports
         """
-        pass
+        self.target_ip = target_ip
+        self.start_point = start_point
+        self.end_point = end_point
 
     # UDP port scanning
     def udp_port_scanning(self):
