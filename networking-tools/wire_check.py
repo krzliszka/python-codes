@@ -93,9 +93,9 @@ class NetworkCheck:
         self.end_point = end_point
 
     # UDP port scanning
-    def udp_port_scanning(self):
-        """
-
+    def udp_port_scanner(self):
+        """Method for scanning range of UDP ports
+        
         """
         pass
 
