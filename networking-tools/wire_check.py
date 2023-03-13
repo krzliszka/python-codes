@@ -1,7 +1,5 @@
 #!/usr/bin/python3
 
-import os
-import random
 from os import geteuid, system
 from random import randrange
 
