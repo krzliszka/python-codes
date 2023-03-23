@@ -113,7 +113,7 @@ class NetworkCheck:
     def udp_port_scanner(self, target_ip, start_point, end_point):
         """
         Method for scanning range of UDP ports
-        Example usage: nttl.udp_port_scanner
+        Example usage: nttl.udp_port_scanner(target_ip='192.168.1.1', start_point=1, end_point=100)
         """
         self.target_ip = target_ip
         self.start_point = start_point
