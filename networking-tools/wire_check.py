@@ -52,13 +52,11 @@ class NetworkCheck:
         self.target_ip = target_ip
         self.interface = interface
 
-        # parsing MAC address
         mac_addr = f"ifconfig {self.interface} | grep -o 'ether [a-z0-9]*:[a-z0-9]*:[a-z0-9]*:[a-z0-9]*:[a-z0-9]*:[a-z0-9]*' | cut -c7-23 > mac.txt"
         system(mac_addr)
         get_mac = open('mac.txt', 'r').read().split('\n')
         system('rm -rf mac.txt')
 
-        # enabling IP forwarding
         system("sudo echo 1 > /proc/sys/net/ipv4/ip_forward")
         try:
             # sending fake ARP requests
@@ -77,7 +75,6 @@ class NetworkCheck:
         self.interface = interface
         self.subnet = subnet
 
-        # creating ARP request packets
         ans, un_ans = srp(Ether(dst='ff:ff:ff:ff:ff:ff')/ARP(pdst=self.subnet), iface=self.interface, timeout=2)
         up_hosts = []
         for snd, rcv in ans:
@@ -121,7 +118,6 @@ class NetworkCheck:
 
         open_UDP_ports = []
         for port in range(self.start_point, self.end_point):
-            # creating UDP packets and sending them to target IP
             udp_packet = IP(dst=self.target_ip)/UDP(dport=port)
             response = sr1(udp_packet, timeout=5, verbose=0)
             if response == None:
