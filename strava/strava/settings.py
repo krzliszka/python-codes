@@ -20,7 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = ''
+SECRET_KEY = 'django-insecure-ax7n37!^8#fr-my&8b0a(n%4rz4=+jk_2%$g7=1rrgv+$)zuxe'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -33,8 +33,8 @@ AUTHENTICATION_BACKENDS = (
 )
 SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/connected/'
 SOCIAL_AUTH_STRAVA_SCOPE = ['activity:read_all']
-SOCIAL_AUTH_STRAVA_KEY = 'xx' #Client ID from API Application
-SOCIAL_AUTH_STRAVA_SECRET = 'xx' # Client Secret from API Application
+SOCIAL_AUTH_STRAVA_KEY = '68732' #Client ID from API Application
+SOCIAL_AUTH_STRAVA_SECRET = 'a37d97a91fa845c148965a09b7a6e1ee228c6a9b' # Client Secret from API Application
 
 
 # Application definition
