@@ -1,1 +1,1 @@
-# STRAVA TOOLS
+# Strava tools
