@@ -1,7 +1,7 @@
-import requests
+import os
 from http.cookiejar import LWPCookieJar
 
-import os
+import requests
 from bs4 import BeautifulSoup
 
 STRAVA_URL_LOGIN = "https://www.strava.com/login"
@@ -12,12 +12,12 @@ COOKIE_FILE_DIR = ".authdata"
 
 
 class Login:
-    VERBOSE = False
-    LOGIN_SESSION = ""
-    AUTHENTICITY_TOKEN = ""
+    verbose = False
+    login_session = ""
+    authenticity_token = ""
 
     def __init__(self, verbose=False):
-        self.VERBOSE = verbose
+        self.verbose = verbose
 
     def cookies_save_to_disk(self, login_username, session, authenticity_token):
         session.cookies.save(ignore_discard=True)
@@ -33,7 +33,7 @@ class Login:
             os.remove(COOKIE_FILE_DIR + "_" + str(login_username) + "_authenticity_token")
 
     def cookies_get_from_disk(self, login_username, session):
-        if self.VERBOSE:
+        if self.verbose:
             print("Loading saved cookies...")
         session.cookies.load(ignore_discard=True)
         file = open(COOKIE_FILE_DIR + "_" + str(login_username) + "_authenticity_token", "r")
@@ -43,7 +43,7 @@ class Login:
         return authenticity_token
 
     def force_login(self, login_username):
-        if self.VERBOSE:
+        if self.verbose:
             print("Force a new login...")
         self.cookies_remove_from_disk(login_username)
 
@@ -58,15 +58,15 @@ class Login:
             authenticity_token = self.cookies_get_from_disk(login_username, session)
             session_from_disk = True
         else:
-            r = session.get(STRAVA_URL_LOGIN)
-            soup = BeautifulSoup(r.content, "html.parser")
+            auth_r = session.get(STRAVA_URL_LOGIN)
+            soup = BeautifulSoup(auth_r.content, "html.parser")
 
             get_details = soup.find("input", attrs={
                 "name": "authenticity_token"
             })
             authenticity_token = get_details.attrs.get("value")
 
-            if self.VERBOSE:
+            if self.verbose:
                 print("LOGIN TOKEN: " + authenticity_token)
 
             # Form data that the page sends when logging in
@@ -78,22 +78,19 @@ class Login:
             }
 
             # Authenticate
-            r = session.post(STRAVA_URL_SESSION, data=login_data)
+            auth_r = session.post(STRAVA_URL_SESSION, data=login_data)
             self.cookies_save_to_disk(login_username, session, authenticity_token)
 
-        r = session.get("https://www.strava.com/dashboard")
+        auth_r = session.get("https://www.strava.com/dashboard")
 
-        self.LOGIN_SESSION = session
-        self.AUTHENTICITY_TOKEN = authenticity_token
+        self.login_session = session
+        self.authenticity_token = authenticity_token
 
-        if int(r.text.find(STRAVA_LOGGED_OUT_FINGERPRINT)) >= 0:
+        if int(auth_r.text.find(STRAVA_LOGGED_OUT_FINGERPRINT)) >= 0:
             if session_from_disk:
-                if self.VERBOSE:
+                if self.verbose:
                     print("Saved cookies failed, getting new session data...")
                 self.cookies_remove_from_disk(login_username)
                 return self.login(login_username, login_password)
-            else:
-                return False
-        else:
-            return True
-
+            return False
+        return True
