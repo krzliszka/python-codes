@@ -57,7 +57,6 @@ def arg(output_file):
     else:
         print()
         print("\tThe file not found!")
-        print()
         sys.exit(0)
 
 
