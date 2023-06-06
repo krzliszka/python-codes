@@ -51,7 +51,7 @@ def arg(output_file):
             return filename, file_path
         else:
             print()
-            print("\tYou don't have permission to write or delete the file!")
+            print("\tYou do not have permission to write or delete the file!")
             print()
             sys.exit(0)
     else:
