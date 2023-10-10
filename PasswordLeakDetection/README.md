@@ -2,4 +2,3 @@
 
 1. General information
 2. Prerequisities
-3. 
