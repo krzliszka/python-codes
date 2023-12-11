@@ -49,3 +49,4 @@ class AdvancedSearch(object):
             return True
         else:
             return False
+
