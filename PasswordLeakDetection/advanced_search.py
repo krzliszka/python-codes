@@ -4,7 +4,6 @@
 import fnmatch
 import os
 import yaml
-
 import core
 
 from termcolor import colored
